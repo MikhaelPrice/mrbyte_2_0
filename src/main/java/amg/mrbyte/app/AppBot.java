@@ -1,7 +1,7 @@
 package amg.mrbyte.app;
 
 import amg.mrbyte.config.BotConfig;
-import amg.mrbyte.service.telegram.MessageHandler;
+import amg.mrbyte.handlers.MessageHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;

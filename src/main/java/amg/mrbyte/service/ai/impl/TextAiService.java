@@ -16,29 +16,15 @@ import java.util.Map;
 import static amg.mrbyte.app.Constants.OPENAI_API_KEY;
 
 @Service
-public class AiTextService implements AiService<String> {
+public class TextAiService implements AiService<OpenAiChatModel, Prompt, String> {
 
-  private static final String KEY_CONTENT = "content";
+  private static final String KEY_INPUT_CONTENT = "inputContent";
   private static final String KEY_CONTENT_TYPES = "contentTypes";
 
-  @Override
-  public Prompt createContentAnalysisPrompt(String content) {
-    PromptTemplate promptTemplate = new PromptTemplate(Constants.PROMPT_CONTENT_ANALYZER);
-    return promptTemplate.create(
-        Map.of(KEY_CONTENT, content, KEY_CONTENT_TYPES, ContentTypes.names()));
-  }
+  private final ChatClient chatClient = ChatClient.builder(createAiModel()).build();
 
   @Override
-  public ContentTypes analiseContent(String content) {
-    OpenAiChatModel textChatModel = createAiChatModel();
-    ChatClient chatClient = ChatClient.builder(textChatModel).build();
-
-    Prompt contentAnalysisPrompt = createContentAnalysisPrompt(content);
-
-    return ContentTypes.valueOf(chatClient.prompt(contentAnalysisPrompt).call().content());
-  }
-
-  private OpenAiChatModel createAiChatModel() {
+  public OpenAiChatModel createAiModel() {
     OpenAiApi openAiApi = new OpenAiApi(OPENAI_API_KEY);
     var openAiChatOptions =
         OpenAiChatOptions.builder()
@@ -46,5 +32,23 @@ public class AiTextService implements AiService<String> {
             .temperature(0.2)
             .build();
     return new OpenAiChatModel(openAiApi, openAiChatOptions);
+  }
+
+  @Override
+  public Prompt createAnalysisPrompt(String inputContent) {
+    PromptTemplate promptTemplate = new PromptTemplate(Constants.PROMPT_INPUT_CONTENT_ANALYZER);
+    return promptTemplate.create(
+        Map.of(KEY_INPUT_CONTENT, inputContent, KEY_CONTENT_TYPES, ContentTypes.names()));
+  }
+
+  @Override
+  public ContentTypes analiseInput(String inputContent) {
+    return ContentTypes.valueOf(
+        chatClient.prompt(createAnalysisPrompt(inputContent)).call().content());
+  }
+
+  @Override
+  public String generateOutput(String inputContent) {
+    return chatClient.prompt().user(inputContent).call().content();
   }
 }

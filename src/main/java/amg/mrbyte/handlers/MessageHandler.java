@@ -1,4 +1,4 @@
-package amg.mrbyte.service.telegram;
+package amg.mrbyte.handlers;
 
 import amg.mrbyte.service.telegram.impl.TextMessageService;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;

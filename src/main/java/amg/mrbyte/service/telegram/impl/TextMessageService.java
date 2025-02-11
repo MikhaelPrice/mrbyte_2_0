@@ -1,8 +1,7 @@
 package amg.mrbyte.service.telegram.impl;
 
 import amg.mrbyte.enums.ContentTypes;
-import amg.mrbyte.service.ai.AiService;
-import amg.mrbyte.service.ai.impl.AiTextService;
+import amg.mrbyte.service.ai.impl.TextAiService;
 import amg.mrbyte.service.telegram.IMessageService;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -14,14 +13,22 @@ public final class TextMessageService implements IMessageService {
 
   @Override
   public ContentTypes getType(Message message) {
-    AiService<String> aiService = new AiTextService();
-    String content = message.getText();
-    return aiService.analiseContent(content);
+    String inputText = message.getText();
+    TextAiService aiService = new TextAiService();
+    return aiService.analiseInput(inputText);
   }
 
   @Override
   public BotApiMethod<?> respond(Message message) {
     ContentTypes contentType = getType(message);
-    return new SendMessage(message.getChatId().toString(), contentType.name());
+
+    if (contentType == ContentTypes.TEXT) {
+      TextAiService textAiService = new TextAiService();
+      String aiResponse = textAiService.generateOutput(message.getText());
+      String chatId = message.getChatId().toString();
+      return new SendMessage(chatId, aiResponse);
+    }
+
+    return null;
   }
 }

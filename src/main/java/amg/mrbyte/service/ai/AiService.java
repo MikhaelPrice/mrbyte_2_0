@@ -1,11 +1,14 @@
 package amg.mrbyte.service.ai;
 
 import amg.mrbyte.enums.ContentTypes;
-import org.springframework.ai.chat.prompt.Prompt;
 
-public interface AiService<T> {
+public interface AiService<C, P, T> {
 
-  Prompt createContentAnalysisPrompt(T content);
+  C createAiModel();
 
-  ContentTypes analiseContent(T content);
+  P createAnalysisPrompt(T inputContent);
+
+  ContentTypes analiseInput(T inputContent);
+
+  T generateOutput(T inputContent);
 }
