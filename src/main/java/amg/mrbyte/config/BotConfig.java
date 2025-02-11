@@ -1,25 +1,21 @@
 package amg.mrbyte.config;
 
-import amg.mrbyte.telegram.bot.TelegramBot;
+import amg.mrbyte.app.AppBot;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@ConfigurationProperties("bot")
 @Data
-@PropertySource("application.properties")
 public class BotConfig {
 
-  @Value("${bot.name}")
-  String botName;
-
-  @Value("${bot.token}")
-  String botToken;
+  private String name;
+  private String token;
 
   @Bean
-  public TelegramBot telegramBot(BotConfig botConfig) {
-    return new TelegramBot(botToken, botConfig);
+  public AppBot appBot(BotConfig botConfig) {
+    return new AppBot(token, botConfig);
   }
 }

@@ -1,7 +1,7 @@
-package amg.mrbyte.telegram.bot;
+package amg.mrbyte.app;
 
 import amg.mrbyte.config.BotConfig;
-import amg.mrbyte.telegram.message.MessageResponder;
+import amg.mrbyte.service.telegram.MessageHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -9,26 +9,26 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-public class TelegramBot extends TelegramLongPollingBot implements MessageResponder {
+public class AppBot extends TelegramLongPollingBot implements MessageHandler {
 
   private final BotConfig botConfig;
 
-  public TelegramBot(String botToken, BotConfig botConfig) {
-    super(botToken);
+  public AppBot(String token, BotConfig botConfig) {
+    super(token);
     this.botConfig = botConfig;
   }
 
   @Override
   public String getBotUsername() {
-    return botConfig.getBotName();
+    return botConfig.getName();
   }
 
   @Override
   public void onUpdateReceived(Update update) {
     if (update.hasMessage()) {
-      BotApiMethod<?> respondMessage = respondMessage(update.getMessage());
+      BotApiMethod<?> botResponse = handleMessage(update.getMessage());
       try {
-        execute(respondMessage);
+        execute(botResponse);
       } catch (TelegramApiException e) {
         e.printStackTrace();
       }

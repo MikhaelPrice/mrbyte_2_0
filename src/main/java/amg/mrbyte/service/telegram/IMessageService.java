@@ -1,12 +1,12 @@
-package amg.mrbyte.telegram.message.service;
+package amg.mrbyte.service.telegram;
 
-import amg.mrbyte.telegram.message.MessageTypes;
+import amg.mrbyte.enums.ContentTypes;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 public interface IMessageService {
 
-  MessageTypes analise(Message message);
+  ContentTypes getType(Message message);
 
-  BotApiMethod<?> respond();
+  BotApiMethod<?> respond(Message message);
 }
