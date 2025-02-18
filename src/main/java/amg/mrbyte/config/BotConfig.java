@@ -1,6 +1,6 @@
 package amg.mrbyte.config;
 
-import amg.mrbyte.app.AppBot;
+import amg.mrbyte.app.AppBotRunner;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ public class BotConfig {
   private String token;
 
   @Bean
-  public AppBot appBot(BotConfig botConfig) {
-    return new AppBot(token, botConfig);
+  public AppBotRunner appBotRunner(BotConfig botConfig) {
+    return new AppBotRunner(token, botConfig);
   }
 }

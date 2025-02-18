@@ -14,15 +14,15 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @RequiredArgsConstructor
 public class AppBotInitializer {
 
-  private final AppBot appBot;
+  private final AppBotRunner appBotRunner;
 
   @EventListener({ContextRefreshedEvent.class})
   public void init() throws TelegramApiException {
     TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
     try {
-      telegramBotsApi.registerBot(appBot);
+      telegramBotsApi.registerBot(appBotRunner);
     } catch (TelegramApiException e) {
-      log.error("Error occurred {}", e.getMessage());
+      e.printStackTrace();
     }
   }
 }

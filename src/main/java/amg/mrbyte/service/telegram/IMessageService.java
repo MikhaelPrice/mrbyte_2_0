@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 public interface IMessageService {
 
-  ContentTypes getType(Message message);
+  ContentTypes getContentTypeForOutput(Message message);
 
-  BotApiMethod<?> respond(Message message);
+  BotApiMethod<?> respondOnMessage(Message message);
 }

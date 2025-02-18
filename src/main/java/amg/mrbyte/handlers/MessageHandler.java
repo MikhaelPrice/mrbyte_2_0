@@ -8,7 +8,7 @@ public interface MessageHandler {
 
   default BotApiMethod<?> handleMessage(Message message) {
     if (message.hasText()) {
-      return new TextMessageService().respond(message);
+      return new TextMessageService().respondOnMessage(message);
     }
     return null;
   }
