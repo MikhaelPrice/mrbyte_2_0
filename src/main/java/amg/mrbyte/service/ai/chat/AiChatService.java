@@ -2,7 +2,7 @@ package amg.mrbyte.service.ai.chat;
 
 import amg.mrbyte.enums.ContentTypes;
 
-public interface IChatAiService<M, T> {
+public interface AiChatService<M, T> {
 
   M createAiModel();
 

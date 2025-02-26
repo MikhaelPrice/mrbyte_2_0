@@ -4,7 +4,7 @@ import static amg.mrbyte.app.Constants.OPENAI_API_KEY;
 
 import amg.mrbyte.enums.ContentTypes;
 import amg.mrbyte.service.ai.IPromptService;
-import amg.mrbyte.service.ai.chat.IChatAiService;
+import amg.mrbyte.service.ai.chat.AiChatService;
 import lombok.NoArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatModel;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @NoArgsConstructor
-public class TextChatAiService
-    implements IChatAiService<OpenAiChatModel, String>, IPromptService<String> {
+public class AiTextChatChatService
+    implements AiChatService<OpenAiChatModel, String>, IPromptService<String> {
 
   private final ChatClient textChatClient = ChatClient.builder(createAiModel()).build();
 
